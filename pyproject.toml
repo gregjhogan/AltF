@@ -1,0 +1,41 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "altf"
+version = "0.1.0"
+description = "N named pty-backed virtual consoles (Alt+F1..F6) for a single LLM agent, with pydantic-ai toolset, file-based logs, and a read-only observer."
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+dependencies = [
+    "ptyprocess>=0.7",
+    "pyte>=0.8.1",
+]
+
+[project.optional-dependencies]
+watch = ["textual>=0.47"]
+pydantic-ai = ["pydantic-ai>=0.2"]
+llm-classifier = ["pydantic-ai>=0.2"]
+
+[dependency-groups]
+dev = [
+    "pytest>=8",
+    "pytest-asyncio>=0.23",
+    "pytest-timeout>=2.2",
+]
+
+[project.scripts]
+altf = "altf.cli:main"
+
+[tool.setuptools.packages.find]
+include = ["altf*"]
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+timeout = 120
+markers = [
+    "docker: integration tests that need a running docker daemon (deselected by default)",
+]
+addopts = "-m 'not docker'"
